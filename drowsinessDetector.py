@@ -128,7 +128,7 @@ while True:
 	cv2.imshow("Are you Sleepy", frame)
 
 	key = cv2.waitKey(1)
-	if key == 27:
+	if key == 27: #Esc key
 		break
 cap.release()
 cv2.destroyAllWindows()
