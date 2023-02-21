@@ -1,8 +1,8 @@
 # drowsinessDetector
 OpenCV Drowsiness Detector using Python and Dlib
-using: 
+# using: 
     python 3.10
-Requirements:
+# Requirements:
     opencv-contrib-python  4.7.0.68
     cmake   any
     Dlib    19.22.99
