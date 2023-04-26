@@ -5,9 +5,9 @@ from pygame import mixer
 
 cap = cv2.VideoCapture(0)
 hog_face_detector = dlib.get_frontal_face_detector()
-dlib_facelandmark = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+dlib_facelandmark = dlib.shape_predictor("./shape_predictor_68_face_landmarks.dat")
 mixer.init()
-warningSound = mixer.Sound("Scream.wav")
+warningSound = mixer.Sound("./Scream.wav")
 
 #status marking for current state
 sleep = 0
@@ -89,11 +89,11 @@ while True:
 
 		MAR = calculate_MAR(mount)
 
-		if(earBlink < 0.2 and MAR < 1.8):
+		if(earBlink < 0.21 and MAR < 1.9):
 			sleep+=1
 			# drowsy=0
 			active=0
-			if(sleep>30):
+			if(sleep>20):
 				warning = True
 				status="DIEEEE !!!"
 				color = (255,0,0)
