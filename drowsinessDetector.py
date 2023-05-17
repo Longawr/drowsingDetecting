@@ -10,9 +10,9 @@ mixer.init()
 warningSound = mixer.Sound("Scream.wav")
 
 #status marking for current state
-sleep = 0
+sleepCount = 0
 # drowsy = 0
-active = 0
+wakeUpCount = 0
 status=""
 color=(0,0,0)
 warning = False
@@ -83,22 +83,22 @@ while True:
 			cv2.circle(frame,(x,y),0,(0,255,0),-1)
 			mount.append((x,y))
 		
-		leftEar = calculate_EAR(leftEye)
-		rightEar = calculate_EAR(rightEye)
-		earBlink = (leftEar + rightEar)/2
+		leftEAR = calculate_EAR(leftEye)
+		rightEAR = calculate_EAR(rightEye)
+		avgEAR = (leftEAR + rightEAR)/2
 
-		MAR = calculate_MAR(mount)
+		mar = calculate_MAR(mount)
 
-		if(earBlink < 0.2 and MAR < 1.8):
-			sleep+=1
+		if(avgEAR < 0.2 and mar < 1.8):
+			sleepCount+=1
 			# drowsy=0
-			active=0
-			if(sleep>30):
+			wakeUpCount=0
+			if(sleepCount>30):
 				warning = True
-				status="DIEEEE !!!"
+				status="Sleep !!!"
 				color = (255,0,0)
-			elif (sleep>10):
-				status="Blink detected !"
+			elif (sleepCount>10):
+				status="Blink !"
 				color = (255,0,0)
 
 		# elif(leftEar==1 or rightEar==1):
@@ -110,11 +110,11 @@ while True:
 		# 		status="You'll die !"
 		# 		color = (0,0,255)
 
-		else:
+		elif(avgEAR > 0.22 or mar > 1.85):
 			# drowsy=0
-			sleep=0
-			active+=1
-			if(active>6):
+			sleepCount=0
+			wakeUpCount+=1
+			if(wakeUpCount>6):
 				warning = False
 				status="You're ok"
 				color = (0,255,0)
@@ -122,8 +122,8 @@ while True:
 		
 		warningSound.play(-1) if warning else warningSound.stop()
 		cv2.putText(frame, status, (100,100), cv2.FONT_HERSHEY_SIMPLEX, 1.2, color,2)
-		cv2.putText(frame, f"EAR: {round(earBlink,2)}", (100,150), cv2.FONT_HERSHEY_SIMPLEX, 1.2, color,2)
-		cv2.putText(frame, f"MAR: {round(MAR, 2)}", (50,200), cv2.FONT_HERSHEY_SIMPLEX, 1.2, color,2)
+		cv2.putText(frame, f"EAR: {round(avgEAR,2)}", (100,150), cv2.FONT_HERSHEY_SIMPLEX, 1.2, color,2)
+		cv2.putText(frame, f"MAR: {round(mar, 2)}", (50,200), cv2.FONT_HERSHEY_SIMPLEX, 1.2, color,2)
 
 	cv2.imshow("Are you Sleepy", frame)
 
